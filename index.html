@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,63 +55,63 @@
             this.el = el;
             this.back = back;
             this.mouse_is_down = false;
-            this.init();
+            this.init(); //생성자 함수 호출
         };
 
         _AttachDragTo.prototype = {
             onMousemove: function (e) {
-                if (!this.mouse_is_down) {
+                if (!this.mouse_is_down) { // mousedown 상태가 아닐 시 종료
                     return;
                 }
-                let x = e.clientX - this.origin_x, y = e.clientY - this.origin_y;
+                let x = e.clientX - this.origin_x, y = e.clientY - this.origin_y; // left, top을 수정할 값
                 console.log('mouse drag', x, y);
 
                 // for smooth
-                x = Math.round(x / 1);
-                y = Math.round(y / 1);
+                x = Math.round(x / 1); // 정수 변환
+                y = Math.round(y / 1); //
 
-                x += this.og_x;
+                x += this.og_x; // 변경할 x 좌표
                 y += this.og_y;
-                if (this.right < x && x < 0) {
-                    this.back.style.left = x + 'px';
+                if (this.right < x && x < 0) { // 변경하려는 left 값이 범위 내에 맞으면
+                    this.back.style.left = x + 'px'; // style 변경
                 }
-                if (this.bottom < y && y < 0) {
-                    this.back.style.top = y + 'px';
+                if (this.bottom < y && y < 0) { // 변경하려는 left 값이 범위 내에 맞으면
+                    this.back.style.top = y + 'px'; // style 변경
                 }
             },
 
-            onMousedown: function (e) {
+            onMousedown: function (e) { // mousedown 이벤트 발생 시
                 console.log('mouse down', e.clientX, e.clientY);
-                this.mouse_is_down = true;
-                this.origin_x = e.clientX;
-                this.origin_y = e.clientY;
+                this.mouse_is_down = true; // mousedown 상태를 나타내는 변수 true로 변경
+                this.origin_x = e.clientX; // 기본 x 값 현재 마우스 커서의 위치로 변경
+                this.origin_y = e.clientY; // 기본 y 값 현재 마우스 커서의 위치로 변경
             },
 
-            onMouseup: function (e) {
-                const styles = getComputedStyle(this.back);
+            onMouseup: function (e) { // 마우스 클릭 상태가 종료 되었을 때
+                const styles = getComputedStyle(this.back); // back 클래스의 style 값을 가져옴
 
-                this.mouse_is_down = false;
-                this.og_x = parseInt(styles.getPropertyValue('left'), 10);
-                this.og_y = parseInt(styles.getPropertyValue('top'), 10);
+                this.mouse_is_down = false; // mousedown 상태 변수 false 변경
+                this.og_x = parseInt(styles.getPropertyValue('left'), 10); //left의 10진수 형태의 문자열을 int로 변환해서 저장
+                this.og_y = parseInt(styles.getPropertyValue('top'), 10); //top의 10진수 형태의 문자열을 int로 변환 해서 저장
                 console.log('mouse up', this.og_x, this.og_y);
             },
             
             onMouseout: function (e) {
-                const styles = getComputedStyle(this.back);
+                const styles = getComputedStyle(this.back); // back 클래스의 style 값을 가져옴
 
-                this.mouse_is_down = false;
-                this.og_x = parseInt(styles.getPropertyValue('left'), 10);
-                this.og_y = parseInt(styles.getPropertyValue('top'), 10);
+                this.mouse_is_down = false; // mousedown 상태 변수 false 변경
+                this.og_x = parseInt(styles.getPropertyValue('left'), 10);//left의 10진수 형태의 문자열을 int로 변환해서 저장
+                this.og_y = parseInt(styles.getPropertyValue('top'), 10);//top의 10진수 형태의 문자열을 int로 변환 해서 저장
                 console.log('mouse out', this.og_x, this.og_y);
             },
 
             init: function () {
                 console.log('init', this.el, this.back);
-                const styles = getComputedStyle(this.back);
-                this.og_x = parseInt(styles.getPropertyValue('left'), 10);
-                this.og_y = parseInt(styles.getPropertyValue('top'), 10);
-                this.right = -($(this.back).width() - $(this.el).width());
-                this.bottom = -($(this.back).height() - $(this.el).height());
+                const styles = getComputedStyle(this.back); //.back 클래스를 사용하는 태그의 css Style 값을 가져옴
+                this.og_x = parseInt(styles.getPropertyValue('left'), 10); // left의 10진수 형태의 문자열을 int로 변환
+                this.og_y = parseInt(styles.getPropertyValue('top'), 10); // top의 10진수 형태의 문자열을 int로 변환
+                this.right = -($(this.back).width() - $(this.el).width()); // 변경할 수 있는 최대 left
+                this.bottom = -($(this.back).height() - $(this.el).height()); // 변경할 수 있는 최대 top
                 /*
                     for pure js
                     getComputedStyle, getPixelValue
@@ -119,10 +119,10 @@
                 console.log('right', this.right, 'bottom', this.bottom);
 
                 //attach events
-                this.el.addEventListener('mousedown', this.onMousedown.bind(this), false);
-                this.el.addEventListener('mouseup', this.onMouseup.bind(this), false);
-                this.el.addEventListener('mousemove', this.onMousemove.bind(this), false);
-                this.el.addEventListener('mouseout', this.onMouseout.bind(this), false);
+                this.el.addEventListener('mousedown', this.onMousedown.bind(this), false); // mousedown 이벤트 발생 시 onmousedown 메소드 바인딩
+                this.el.addEventListener('mouseup', this.onMouseup.bind(this), false); // mouseup 이벤트 발생 시 onmouseup 메소드 바인딩
+                this.el.addEventListener('mousemove', this.onMousemove.bind(this), false); // mousemove 이벤트 발생 시 onmousemove 메소드 바인딩
+                this.el.addEventListener('mouseout', this.onMouseout.bind(this), false); // mouseout 이벤트 발생 시 onmouseout 메소드 바인딩
             }
         };
 
@@ -130,6 +130,6 @@
             new _AttachDragTo(el, back);
         };
     })();
-    AttachDragTo($('.view')[0], $('.back')[0])
+    AttachDragTo($('.view')[0], $('.back')[0]) // 현재 페이지 중 view와 back 클래스를 사용하는 태그들 중 첫 번째 태그로 AttachDragTo 함수 호출
 </script>
 </html>
